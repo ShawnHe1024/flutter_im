@@ -17,7 +17,7 @@ class Application {
   static const int MSG_TYPE_IMAGE = 2;
   static const int MSG_TYPE_AUDIO = 3;
 
-  static String address = "192.168.50.213";
+  static String address = "im.shawnhe.tech";
   static int port = 51257;
   static NetworkManager networkManager;
 

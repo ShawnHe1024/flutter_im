@@ -91,11 +91,11 @@ class _MainChattingWidgetState extends State<MainChattingWidget> {
                   ),
                 ),
               ),
-              Icon(
-                Icons.volume_off,
-                size: 15,
-                color: Colors.grey,
-              )
+              // Icon(
+              //   Icons.volume_off,
+              //   size: 15,
+              //   color: Colors.grey,
+              // )
             ]),
           ),
           Container(

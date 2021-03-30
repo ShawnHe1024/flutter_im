@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_im/common/Application.dart';
 import 'package:flutter_im/handler/ResponseHandler.dart';
 import 'package:flutter_im/packet/Packet.dart';
@@ -25,20 +26,28 @@ const int minMsgLen =
 class NetworkManager {
   static final int retry = 3;
 
+  static DateTime lastDateTime;
+
   final String host;
 
   final int port;
 
-  Socket socket;
+  SecureSocket socket;
 
   Int8List cacheData = Int8List(0);
 
   NetworkManager(this.host, this.port);
 
   void init(int i) async {
+    if (i == 0 && lastDateTime != null && (DateTime.now().second - lastDateTime.second) > 10) {
+      i = retry;
+    }
     if (i > 0) {
       try {
-        socket = await Socket.connect(host, port, timeout: Duration(seconds: 10));
+        SecurityContext context = SecurityContext();
+        String certData = await rootBundle.loadString('assets/server.pem');
+        context.setTrustedCertificatesBytes(utf8.encode(certData));
+        socket = await SecureSocket.connect(host, port, context: context, timeout: Duration(seconds: 10));
         Timer.periodic(Duration(seconds: 10), (timer) {
           HeartBeatRequestPacket heartBeatRequestPacket = HeartBeatRequestPacket();
           Application.networkManager.sendMsg(heartBeatRequestPacket);
@@ -52,6 +61,7 @@ class NetworkManager {
           onError: errorHandler, onDone: doneHandler, cancelOnError: false);
     } else {
       showToast("网络故障，请检查网络后重试!");
+      lastDateTime = DateTime.now();
     }
   }
 

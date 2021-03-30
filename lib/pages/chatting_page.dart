@@ -38,7 +38,14 @@ class _ChattingPageState extends State<ChattingPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.userInfo.nickname),
+        title: Container(
+          child: Row(
+            children: [
+              Text(widget.userInfo.nickname),
+              Text(widget.userInfo.online?'在线':'离线'),
+            ],
+          ),
+        ),
       ),
       body: Builder(builder: (context) {
         List<MessageInfo> list = context.watch<ChatListStateProvide>().chatDataMap[widget.userInfo.id];

@@ -35,42 +35,44 @@ class _LoginPageState extends State<LoginPage> {
         //     fit: BoxFit.cover
         //   )
         // ),
-        child: Column(
-          children: [
-            loginForm(),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
+        child: Center(
+          child: Column(
+            children: [
+              loginForm(),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
 
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: 10),
-                      child: Text('忘记密码')
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10),
+                        child: Text('忘记密码')
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 1,
-                    height: 13 ,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(color: Colors.grey),
+                    SizedBox(
+                      width: 1,
+                      height: 13 ,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.grey),
+                      ),
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
+                    InkWell(
+                      onTap: () {
 
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Text('注册账号')
+                      },
+                      child: Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Text('注册账号')
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

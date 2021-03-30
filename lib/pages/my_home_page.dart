@@ -1,22 +1,13 @@
 import 'dart:async';
-import 'dart:ffi';
-import 'dart:wasm';
 
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_im/common/Application.dart';
-import 'package:flutter_im/model/UserInfo.dart';
-import 'package:flutter_im/packet/request/GetFriendsRequestPacket.dart';
 import 'package:flutter_im/pages/chatting_list_page.dart';
-import 'package:flutter_im/provider/AppStateProvide.dart';
 import 'package:flutter_im/utils/SystemUtils.dart';
 import 'package:flutter_im/widgets/left_menu_widget.dart';
-import 'package:flutter_im/widgets/main_chatting_widget.dart';
 import 'package:flutter_im/widgets/top_menu_bar.dart';
 import 'package:flutter_im/widgets/top_search_bar.dart';
 import 'package:flutter_im/widgets/top_text.dart';
-import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
@@ -51,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         leading: TopMenuBar(),
         title: TopText(),
-        actions: [TopSearchBar()],
+        // actions: [TopSearchBar()],
       ),
       drawer: LeftMenuWidget(),
       //使用全屏宽度时会覆盖其他的滑动事件
@@ -72,15 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         child: ChattingListPage()
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed('/loin');
-        },
-        child: Icon(
-          Icons.edit,
-          size: 30,
-        ),
-      ), // This t
       // railing comma makes auto-formatting nicer for build methods.
     );
   }

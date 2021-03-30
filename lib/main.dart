@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 void main() {
   var _appStateProvide = AppStateProvide();
   var _chatListStateProvide = ChatListStateProvide();
+  WidgetsFlutterBinding.ensureInitialized();
   Application.init();
   runApp(
     MultiProvider(
