@@ -86,5 +86,6 @@ class MyApp extends StatelessWidget {
   List<String> anno = [
     // "/",
     "/login",
+    "/register",
   ];
 }

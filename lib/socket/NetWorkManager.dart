@@ -53,12 +53,12 @@ class NetworkManager {
           Application.networkManager.sendMsg(heartBeatRequestPacket);
         });
         Provider.of<AppStateProvide>(MyRouter.navigatorKey.currentContext, listen: false).changeHomeTitle(Application.TITLE_DEFAULT);
+        socket.listen(decodeHandle,
+            onError: errorHandler, onDone: doneHandler, cancelOnError: false);
       } catch (e) {
         print("连接socket出现异常, e=${e.toString()}");
-        init(--i);
+        Timer(Duration(seconds: 3), (){init(--i);});
       }
-      socket.listen(decodeHandle,
-          onError: errorHandler, onDone: doneHandler, cancelOnError: false);
     } else {
       showToast("网络故障，请检查网络后重试!");
       lastDateTime = DateTime.now();

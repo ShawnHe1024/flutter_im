@@ -2,17 +2,20 @@ import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_im/common/Application.dart';
 import 'package:flutter_im/packet/request/LoginRequestPacket.dart';
+import 'package:flutter_im/packet/request/RegisterRequestPacket.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _unameController = new TextEditingController();
+  TextEditingController _nickNameController = new TextEditingController();
   TextEditingController _pwdController = new TextEditingController();
+  TextEditingController _avatarController = new TextEditingController();
   bool pwdShow = false; //密码是否显示明文
   GlobalKey _formKey = new GlobalKey<FormState>();
   bool _nameAutoFocus = true;
@@ -26,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('登陆'),
+        title: Text('注册'),
       ),
       body: SingleChildScrollView(
         // decoration: BoxDecoration(
@@ -39,38 +42,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               loginForm(),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        child: Text('忘记密码')
-                      ),
-                    ),
-                    SizedBox(
-                      width: 1,
-                      height: 13 ,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(color: Colors.grey),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed('/register');
-                      },
-                      child: Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text('注册账号')
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
         ),
@@ -90,15 +61,23 @@ class _LoginPageState extends State<LoginPage> {
               autofocus: _nameAutoFocus,
               controller: _unameController,
               decoration: InputDecoration(
-                  hintText: '请输入用户名/邮箱',
+                  hintText: '请输入用户名',
                   prefixIcon: Icon(Icons.person)),
               validator: (v) {
                 return v.trim().isNotEmpty ? null : '用户名不能为空';
               },
             ),
             TextFormField(
+              controller: _nickNameController,
+              decoration: InputDecoration(
+                  hintText: '请输入昵称',
+                  prefixIcon: Icon(Icons.account_circle)),
+              validator: (v) {
+                return v.trim().isNotEmpty ? null : '昵称不能为空';
+              },
+            ),
+            TextFormField(
               controller: _pwdController,
-              autofocus: !_nameAutoFocus,
               decoration: InputDecoration(
                   hintText: '请输入密码',
                   prefixIcon: Icon(Icons.lock),
@@ -116,6 +95,16 @@ class _LoginPageState extends State<LoginPage> {
                 return v.trim().isNotEmpty ? null : '密码不能为空';
               },
             ),
+            TextFormField(
+              decoration: InputDecoration(
+                  hintText: '请确认输入密码',
+                  prefixIcon: Icon(Icons.lock),
+                  ),
+              obscureText: true,
+              validator: (v) {
+                return v.trim().isNotEmpty ? v.compareTo(_pwdController.text) == 0? null : '两次密码输入不一致' : '密码不能为空';
+              },
+            ),
             Padding(
               padding: EdgeInsets.only(top: 25),
               child: ConstrainedBox(
@@ -123,9 +112,9 @@ class _LoginPageState extends State<LoginPage> {
                     BoxConstraints.expand(height: ScreenUtil().getHeight(55)),
                 child: RaisedButton(
                   color: Theme.of(context).primaryColor,
-                  onPressed: _onLogin,
+                  onPressed: _onRegister,
                   textColor: Colors.white,
-                  child: Text('登陆'),
+                  child: Text('注册'),
                 ),
               ),
             )
@@ -135,12 +124,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onLogin() {
+  void _onRegister() {
     if ((_formKey.currentState as FormState).validate()) {
       String username = _unameController.text;
+      String nickname = _nickNameController.text;
       String password = _pwdController.text;
-      LoginRequestPacket req =
-          LoginRequestPacket(username: username, password: password);
+      String avatar = _avatarController.text;
+      RegisterRequestPacket req = RegisterRequestPacket(username, nickname, password, avatar);
       Application.networkManager.sendMsg(req);
     }
   }

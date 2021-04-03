@@ -35,5 +35,7 @@ class Command {
   static const int GET_FRIENDS_REQUEST = 17;
 
   static const int GET_FRIENDS_RESPONSE = 18;
-  
+
+  static const int REGISTER_REQUEST = 19;
+
 }
