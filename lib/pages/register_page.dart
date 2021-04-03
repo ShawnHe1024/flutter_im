@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_im/common/Application.dart';
 import 'package:flutter_im/packet/request/LoginRequestPacket.dart';
 import 'package:flutter_im/packet/request/RegisterRequestPacket.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key key}) : super(key: key);
@@ -12,13 +15,15 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController _unameController = new TextEditingController();
-  TextEditingController _nickNameController = new TextEditingController();
-  TextEditingController _pwdController = new TextEditingController();
-  TextEditingController _avatarController = new TextEditingController();
+  final TextEditingController _unameController = new TextEditingController();
+  final TextEditingController _nickNameController = new TextEditingController();
+  final TextEditingController _pwdController = new TextEditingController();
+  final TextEditingController _avatarController = new TextEditingController();
+  final ImagePicker _picker = ImagePicker();
   bool pwdShow = false; //密码是否显示明文
   GlobalKey _formKey = new GlobalKey<FormState>();
   bool _nameAutoFocus = true;
+  PickedFile _imageFile;
 
   @override
   void initState() {
@@ -57,6 +62,14 @@ class _RegisterPageState extends State<RegisterPage> {
         autovalidate: true,
         child: Column(
           children: <Widget>[
+            InkWell(
+              onTap: () {
+                _onImageButtonPressed(ImageSource.gallery);
+              },
+              child: CircleAvatar(
+                  backgroundImage: _imageFile != null?Image.file(File(_imageFile.path)).image:null
+              ),
+            ),
             TextFormField(
               autofocus: _nameAutoFocus,
               controller: _unameController,
@@ -134,4 +147,23 @@ class _RegisterPageState extends State<RegisterPage> {
       Application.networkManager.sendMsg(req);
     }
   }
+
+  void _onImageButtonPressed(ImageSource source,
+      {BuildContext context}) async {
+      try {
+        final pickedFile = await _picker.getImage(
+          source: source,
+          maxWidth: 300,
+          maxHeight: 300,
+        );
+        setState(() {
+          _imageFile = pickedFile;
+        });
+      } catch (e) {
+        setState(() {
+          showToast('选择图片时发生错误');
+        });
+      }
+  }
+
 }

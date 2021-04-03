@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_im/common/Application.dart';
+import 'package:flutter_im/packet/request/LogoutRequestPacket.dart';
 
 class LeftMenuWidget extends StatefulWidget {
   LeftMenuWidget({Key key}) : super(key: key);
@@ -22,12 +26,9 @@ class _LeftMenuWidgetState extends State<LeftMenuWidget> {
                 color: Theme.of(context).primaryColor
               ),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://t8.baidu.com/it/u=3571592872,3353494284&fm=79&app=86&size=h300&n=0&g=4n&f=jpeg?sec=1603784809&t=e1ea1f77a0c09c75a369667a180335e7"
-                ),
+                backgroundImage: Application.loginUser.avatar.isNotEmpty?Image.memory(Base64Decoder().convert(Application.loginUser.avatar)).image:null
               ),
-              accountName: Text('hhh eee'),
-              accountEmail: Text('+86 132-9657-2347'),
+              accountName: Text(Application.loginUser.nickname),
             ),
           ),
           ListTile(
@@ -37,8 +38,13 @@ class _LeftMenuWidgetState extends State<LeftMenuWidget> {
           Divider(), //分割线
           ListTile(
             leading: Icon(Icons.close),
-            title: Text('关闭'),
-            onTap: () => Navigator.pop(context), // 关闭抽屉
+            title: Text('退出'),
+            onTap: () {
+              LogoutRequestPacket req = LogoutRequestPacket();
+              Application.networkManager.sendMsg(req);
+              Application.loginUser = null;
+              Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => route == null);
+            }, // 关闭抽屉
           )
         ],
       ),

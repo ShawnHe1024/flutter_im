@@ -38,4 +38,6 @@ class Command {
 
   static const int REGISTER_REQUEST = 19;
 
+  static const int LOGOUT_REQUEST = 20;
+
 }
