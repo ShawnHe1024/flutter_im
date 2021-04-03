@@ -29,6 +29,7 @@ class _LeftMenuWidgetState extends State<LeftMenuWidget> {
                 backgroundImage: Application.loginUser.avatar.isNotEmpty?Image.memory(Base64Decoder().convert(Application.loginUser.avatar)).image:null
               ),
               accountName: Text(Application.loginUser.nickname),
+              accountEmail: null,
             ),
           ),
           ListTile(

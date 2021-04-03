@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flustars/flustars.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_im/common/Application.dart';
 import 'package:flutter_im/packet/request/LoginRequestPacket.dart';
 import 'package:flutter_im/packet/request/RegisterRequestPacket.dart';
+import 'package:flutter_im/widgets/LoadingDialog.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -18,7 +21,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _unameController = new TextEditingController();
   final TextEditingController _nickNameController = new TextEditingController();
   final TextEditingController _pwdController = new TextEditingController();
-  final TextEditingController _avatarController = new TextEditingController();
   final ImagePicker _picker = ImagePicker();
   bool pwdShow = false; //密码是否显示明文
   GlobalKey _formKey = new GlobalKey<FormState>();
@@ -67,6 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 _onImageButtonPressed(ImageSource.gallery);
               },
               child: CircleAvatar(
+                radius: 50,
                   backgroundImage: _imageFile != null?Image.file(File(_imageFile.path)).image:null
               ),
             ),
@@ -137,12 +140,17 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void _onRegister() {
+  void _onRegister() async {
+    LoadingDialog();
     if ((_formKey.currentState as FormState).validate()) {
+      if(_imageFile == null) {
+        showToast('请上传头像');
+      }
       String username = _unameController.text;
       String nickname = _nickNameController.text;
       String password = _pwdController.text;
-      String avatar = _avatarController.text;
+      List<int> imageBytes = await FlutterImageCompress.compressWithFile(_imageFile.path, quality: 20);
+      String avatar = base64Encode(imageBytes);
       RegisterRequestPacket req = RegisterRequestPacket(username, nickname, password, avatar);
       Application.networkManager.sendMsg(req);
     }
