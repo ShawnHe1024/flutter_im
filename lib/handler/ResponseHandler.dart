@@ -13,6 +13,10 @@ Map<int, Function> socketHandler = const {
   Command.HEARTBEAT_RESPONSE: heartBeatResponseHandler,
   Command.MESSAGE_RESPONSE: messageResponseHandler,
   Command.GET_FRIENDS_RESPONSE: getFriendsResponseHandler,
+  Command.SEARCH_FRIEND_RESPONSE: null,
+  Command.ADD_FRIEND_RESPONSE: null,
+  Command.ENCRYPT_RESPONSE: null,
+  Command.FORWARD_RESPONSE: null,
 };
 
 void loginResponseHandler(String json) {

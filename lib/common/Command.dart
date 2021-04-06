@@ -40,4 +40,18 @@ class Command {
 
   static const int LOGOUT_REQUEST = 20;
 
+  static const int  SEARCH_FRIEND_REQUEST = 21;
+
+  static const int  SEARCH_FRIEND_RESPONSE = 22;
+
+  static const int  ADD_FRIEND_REQUEST = 23;
+
+  static const int  ADD_FRIEND_RESPONSE = 24;
+
+  static const int  ENCRYPT_REQUEST = 25;
+
+  static const int  ENCRYPT_RESPONSE = 26;
+
+  static const int  FORWARD_RESPONSE = 27;
+
 }

@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         leading: TopMenuBar(),
         title: TopText(),
-        // actions: [TopSearchBar()],
+        actions: [TopSearchBar()],
       ),
       drawer: LeftMenuWidget(),
       //使用全屏宽度时会覆盖其他的滑动事件
