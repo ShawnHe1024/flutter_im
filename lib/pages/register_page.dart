@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_im/common/Application.dart';
 import 'package:flutter_im/packet/request/LoginRequestPacket.dart';
 import 'package:flutter_im/packet/request/RegisterRequestPacket.dart';
+import 'package:flutter_im/utils/SystemUtils.dart';
 import 'package:flutter_im/widgets/LoadingDialog.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,7 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _unameController = new TextEditingController();
   final TextEditingController _nickNameController = new TextEditingController();
   final TextEditingController _pwdController = new TextEditingController();
-  final ImagePicker _picker = ImagePicker();
   bool pwdShow = false; //密码是否显示明文
   GlobalKey _formKey = new GlobalKey<FormState>();
   bool _nameAutoFocus = true;
@@ -65,8 +65,8 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           children: <Widget>[
             InkWell(
-              onTap: () {
-                _onImageButtonPressed(ImageSource.gallery);
+              onTap: () async {
+                _imageFile = await SystemUtils.onImageButtonPressed(ImageSource.gallery);
               },
               child: CircleAvatar(
                 radius: 50,
@@ -154,24 +154,6 @@ class _RegisterPageState extends State<RegisterPage> {
       RegisterRequestPacket req = RegisterRequestPacket(username, nickname, password, avatar);
       Application.networkManager.sendMsg(req);
     }
-  }
-
-  void _onImageButtonPressed(ImageSource source,
-      {BuildContext context}) async {
-      try {
-        final pickedFile = await _picker.getImage(
-          source: source,
-          maxWidth: 300,
-          maxHeight: 300,
-        );
-        setState(() {
-          _imageFile = pickedFile;
-        });
-      } catch (e) {
-        setState(() {
-          showToast('选择图片时发生错误');
-        });
-      }
   }
 
 }

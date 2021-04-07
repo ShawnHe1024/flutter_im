@@ -40,6 +40,10 @@ class UserInfo {
 
   String get avatar => _avatar;
 
+  set avatar(String value) {
+    _avatar = value;
+  }
+
   bool get online => _online;
 
   MessageInfo get lastMessage => _lastMessage;

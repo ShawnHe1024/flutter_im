@@ -4,15 +4,12 @@ import 'package:emoji_picker/emoji_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_im/common/Application.dart';
 import 'package:flutter_im/utils/SystemUtils.dart';
-import 'package:flutter_im/widgets/voice_widget.dart';
-import 'package:flutter_plugin_record/flutter_plugin_record.dart';
 
 class ChatEditWidget extends StatefulWidget {
   bool _isShowEmoji;
-  FlutterPluginRecord _recordPlugin;
   Function(Object, int) _sendMsg;
 
-  ChatEditWidget(this._isShowEmoji, this._sendMsg, this._recordPlugin);
+  ChatEditWidget(this._isShowEmoji, this._sendMsg);
 
   @override
   _ChatEditWidgetState createState() => _ChatEditWidgetState();
@@ -65,9 +62,7 @@ class _ChatEditWidgetState extends State<ChatEditWidget> {
                   constraints: BoxConstraints(
                     minHeight: 50.0
                   ),
-                  child: _isVoiceMsg?
-                  VoiceWidget(startRecord: startRecord, stopRecord: stopRecord):
-                  Container(
+                  child: Container(
                     decoration: BoxDecoration(
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(5)

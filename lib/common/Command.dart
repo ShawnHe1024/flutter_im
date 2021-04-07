@@ -54,4 +54,6 @@ class Command {
 
   static const int  FORWARD_RESPONSE = 27;
 
+  static const int  UPDATE_AVATAR_REQUEST = 28;
+
 }

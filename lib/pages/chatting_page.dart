@@ -16,8 +16,6 @@ import 'package:flutter_im/provider/ChatListStateProvide.dart';
 import 'package:flutter_im/utils/SystemUtils.dart';
 import 'package:flutter_im/widgets/chat_edit_widget.dart';
 import 'package:flutter_im/widgets/message_text_item.dart';
-import 'package:flutter_plugin_record/flutter_plugin_record.dart';
-import 'package:flutter_plugin_record/widgets/voice_widget.dart';
 import 'package:provider/provider.dart';
 
 class ChattingPage extends StatefulWidget {
@@ -32,20 +30,35 @@ bool _isShowEmoji = false;
 
 class _ChattingPageState extends State<ChattingPage>{
 
-  FlutterPluginRecord recordPlugin;
+  bool encrypt = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Container(
           child: Row(
             children: [
-              Text(widget.userInfo.nickname),
               Text(widget.userInfo.online?'在线':'离线'),
+              Text(widget.userInfo.nickname),
             ],
           ),
         ),
+        actions: [
+          InkWell(
+            onTap: () {
+              encrypt = true;
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 15),
+              child: Icon(
+                encrypt?Icons.enhanced_encryption:Icons.no_encryption,
+                size: 30,
+              ),
+            ),
+          )
+        ],
       ),
       body: Builder(builder: (context) {
         List<MessageInfo> list = context.watch<ChatListStateProvide>().chatDataMap[widget.userInfo.id];
@@ -68,12 +81,14 @@ class _ChattingPageState extends State<ChattingPage>{
                       itemBuilder: (context, index) {
                         if (list != null) {
                           // list.sort((a, b) => b.sendTime.compareTo(a.sendTime));
-                          return MessageTextItem(list[list.length-1-index], widget.userInfo.avatar, recordPlugin);
+                          return MessageTextItem(list[list.length-1-index], widget.userInfo.avatar);
+                        } else {
+                          return null;
                         }
                       }
                   ),
                 ),
-                ChatEditWidget(_isShowEmoji, _sendMsg, recordPlugin),
+                ChatEditWidget(_isShowEmoji, _sendMsg),
               ],
             ),
           ),
@@ -96,7 +111,6 @@ class _ChattingPageState extends State<ChattingPage>{
   @override
   void initState() {
     _isShowEmoji = false;
-    recordPlugin = new FlutterPluginRecord();
   }
 
   @override

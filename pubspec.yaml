@@ -39,12 +39,11 @@ dependencies:
   emoji_picker: ^0.1.0
   cached_network_image: ^2.4.0
   vibration: ^1.7.3
-  flutter_plugin_record: ^1.0.1
   path_provider: ^2.0.1
   device_info: ^2.0.0
   image_picker: ^0.7.4
   flutter_image_compress: ^1.0.0
-  rsa_encrypt: ^1.0.5
+  pointycastle: ^2.0.1
 
 dev_dependencies:
   flutter_test:

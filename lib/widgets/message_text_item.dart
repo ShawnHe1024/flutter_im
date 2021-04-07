@@ -6,16 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_im/common/Application.dart';
 import 'package:flutter_im/model/MessageInfo.dart';
-import 'package:flutter_plugin_record/flutter_plugin_record.dart';
-import 'package:flutter_plugin_record/index.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MessageTextItem extends StatelessWidget {
-  final FlutterPluginRecord _recordPlugin;
   final MessageInfo messageInfo;
   final String avatarUrl;
 
-  MessageTextItem(this.messageInfo, this.avatarUrl, this._recordPlugin);
+  MessageTextItem(this.messageInfo, this.avatarUrl);
 
   @override
   Widget build(BuildContext context) {
@@ -142,30 +139,6 @@ class MessageTextItem extends StatelessWidget {
         style: TextStyle(
             fontSize: 18
         ),
-      );
-    }
-    if (messageInfo.type == 3) {
-      return FutureBuilder(
-        future: getPath(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return InkWell(
-              onTap: () {
-                _recordPlugin.playByPath(snapshot.data, "file");
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-
-                  Icon(Icons.play_circle_fill)
-                ],
-              ),
-            );
-          } else {
-            return Container();
-          }
-        }
       );
     }
   }

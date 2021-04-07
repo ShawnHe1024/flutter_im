@@ -4,6 +4,10 @@ import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_im/common/Application.dart';
 import 'package:flutter_im/packet/request/LogoutRequestPacket.dart';
+import 'package:flutter_im/packet/request/UpdateAvatarRequestPacket.dart';
+import 'package:flutter_im/utils/SystemUtils.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
 
 class LeftMenuWidget extends StatefulWidget {
   LeftMenuWidget({Key key}) : super(key: key);
@@ -13,6 +17,8 @@ class LeftMenuWidget extends StatefulWidget {
 }
 
 class _LeftMenuWidgetState extends State<LeftMenuWidget> {
+  PickedFile _imageFile;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -25,8 +31,16 @@ class _LeftMenuWidgetState extends State<LeftMenuWidget> {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor
               ),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: Application.loginUser.avatar.isNotEmpty?Image.memory(Base64Decoder().convert(Application.loginUser.avatar)).image:null
+              currentAccountPicture: InkWell(
+                onTap: () async {
+                  _imageFile = await SystemUtils.onImageButtonPressed(ImageSource.gallery);
+                  if (_imageFile != null) {
+                    _updateAvatar();
+                  }
+                },
+                child: CircleAvatar(
+                  backgroundImage: Application.loginUser.avatar.isNotEmpty?Image.memory(Base64Decoder().convert(Application.loginUser.avatar)).image:null
+                ),
               ),
               accountName: Text(Application.loginUser.nickname),
               accountEmail: null,
@@ -51,4 +65,17 @@ class _LeftMenuWidgetState extends State<LeftMenuWidget> {
       ),
     );
   }
+
+
+
+  void _updateAvatar() async {
+      if(_imageFile == null) {
+        showToast('请上传头像');
+      }
+      List<int> imageBytes = await FlutterImageCompress.compressWithFile(_imageFile.path, quality: 20);
+      String avatar = base64Encode(imageBytes);
+      UpdateAvatarRequestPacket req = UpdateAvatarRequestPacket(avatar);
+      Application.networkManager.sendMsg(req);
+  }
+
 }
