@@ -4,11 +4,11 @@ import 'package:flutter_im/common/Command.dart';
 import 'package:flutter_im/model/UserInfo.dart';
 import 'package:flutter_im/packet/Packet.dart';
 
-class AddFriendRequestPacket extends Packet {
+class EncryptRequestPacket extends Packet {
 
   int _userId;
 
-  AddFriendRequestPacket(this._userId);
+  EncryptRequestPacket(this._userId);
 
   @override
   Map<String, dynamic> toJson() {

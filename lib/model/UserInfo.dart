@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter_im/model/MessageInfo.dart';
+import 'package:pointycastle/asymmetric/api.dart';
 
 class UserInfo {
 
@@ -13,6 +14,9 @@ class UserInfo {
   MessageInfo _lastMessage;
 
   bool _online;
+
+  RSAPublicKey _publicKey;
+  RSAPrivateKey _privateKey;
 
   UserInfo.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -50,5 +54,17 @@ class UserInfo {
 
   set lastMessage(MessageInfo value) {
     _lastMessage = value;
+  }
+
+  RSAPrivateKey get privateKey => _privateKey;
+
+  set privateKey(RSAPrivateKey value) {
+    _privateKey = value;
+  }
+
+  RSAPublicKey get publicKey => _publicKey;
+
+  set publicKey(RSAPublicKey value) {
+    _publicKey = value;
   }
 }

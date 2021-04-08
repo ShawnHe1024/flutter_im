@@ -54,6 +54,10 @@ class MessageInfo {
 
   Object get content => _content;
 
+  set content(Object value) {
+    _content = value;
+  }
+
   int get toUserId => _toUserId;
 
   int get fromUserId => _fromUserId;

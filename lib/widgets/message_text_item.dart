@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -58,19 +59,11 @@ class MessageTextItem extends StatelessWidget {
         ),
         ClipRRect(
           borderRadius: BorderRadius.circular(30),
-          child: CachedNetworkImage(
-            imageUrl: Application.loginUser.avatar,
+          child: Image(
+            image: Application.loginUser.avatar.isNotEmpty?Image.memory(Base64Decoder().convert(Application.loginUser.avatar)).image:null,
             height: 40,
             width: 40,
             fit: BoxFit.cover,
-            errorWidget: (context, str, o) {
-              return Image.asset(
-                'assets/samurai_V_1080x1920.png',
-                height: 40,
-                width: 40,
-                fit: BoxFit.cover,
-              );
-            },
           ),
         ),
       ],
@@ -83,19 +76,11 @@ class MessageTextItem extends StatelessWidget {
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.circular(30),
-          child: CachedNetworkImage(
-            imageUrl: avatarUrl,
+          child: Image(
+            image: avatarUrl.isNotEmpty?Image.memory(Base64Decoder().convert(avatarUrl)).image:null,
             height: 40,
             width: 40,
             fit: BoxFit.cover,
-            errorWidget: (context, str, o) {
-              return Image.asset(
-                'assets/samurai_V_1080x1920.png',
-                height: 40,
-                width: 40,
-                fit: BoxFit.cover,
-              );
-            },
           ),
         ),
         SizedBox(

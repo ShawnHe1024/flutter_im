@@ -87,8 +87,8 @@ class NetworkManager {
 
   void doneHandler() {
     socket.destroy();
-    print("socket关闭处理");
-    print("socket重连处理");
-    init(retry);
+    // print("socket关闭处理");
+    // print("socket重连处理");
+    // init(retry);
   }
 }

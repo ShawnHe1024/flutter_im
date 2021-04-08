@@ -3,22 +3,27 @@ import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_im/model/UserInfo.dart';
 import 'package:flutter_im/pages/chatting_page.dart';
+import 'package:flutter_im/provider/ChatListStateProvide.dart';
+import 'package:provider/provider.dart';
 
 class MainChattingWidget extends StatefulWidget {
-  final UserInfo userInfo;
-  MainChattingWidget(this.userInfo, {Key key}) : super(key: key);
+  final int userId;
+  MainChattingWidget(this.userId, {Key key}) : super(key: key);
+  UserInfo _userInfo;
 
   @override
   _MainChattingWidgetState createState() => _MainChattingWidgetState();
 }
 
 class _MainChattingWidgetState extends State<MainChattingWidget> {
+
   @override
   Widget build(BuildContext context) {
+    widget._userInfo = context.watch<ChatListStateProvide>().chatMap[widget.userId];
     return InkWell(
       onTap: () {
         Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) {
-          return new ChattingPage(widget.userInfo);
+          return new ChattingPage(widget.userId);
         }));
       },
       child: Container(
@@ -65,16 +70,16 @@ class _MainChattingWidgetState extends State<MainChattingWidget> {
   }
 
   String lastMessageText() {
-    if (widget.userInfo.lastMessage.type == 1) {
-      return widget.userInfo.lastMessage.content;
+    if (widget._userInfo.lastMessage.type == 1) {
+      return widget._userInfo.lastMessage.content;
     }
-    if (widget.userInfo.lastMessage.type == 3) {
+    if (widget._userInfo.lastMessage.type == 3) {
       return "[语音]";
     }
   }
 
   Widget chat_info() {
-    DateTime lastChatTime = DateTime.fromMillisecondsSinceEpoch(widget.userInfo.lastMessage.sendTime);
+    DateTime lastChatTime = DateTime.fromMillisecondsSinceEpoch(widget._userInfo.lastMessage.sendTime);
     return Container(
       margin: EdgeInsets.only(top: 12),
       child: Row(
@@ -84,7 +89,7 @@ class _MainChattingWidgetState extends State<MainChattingWidget> {
               Padding(
                 padding: EdgeInsets.only(right: 5.0),
                 child: Text(
-                  widget.userInfo.nickname,
+                  widget._userInfo.nickname,
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -111,7 +116,7 @@ class _MainChattingWidgetState extends State<MainChattingWidget> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: CachedNetworkImage(
-          imageUrl: widget.userInfo.avatar,
+          imageUrl: widget._userInfo.avatar,
           height: 50,
           width: 50,
           fit: BoxFit.cover,

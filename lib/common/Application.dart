@@ -39,7 +39,7 @@ void showToast(
     msg: text,
     toastLength: toastLength,
     gravity: gravity,
-    timeInSecForIosWeb: 3,
+    timeInSecForIosWeb: 5,
     backgroundColor: Colors.grey[600],
     fontSize: 16.0
   );

@@ -15,7 +15,6 @@ class ChattingListPage extends StatefulWidget {
 }
 
 class _ChattingListPageState extends State<ChattingListPage> {
-  Future _future;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class _ChattingListPageState extends State<ChattingListPage> {
                 ));
               },
               // child: MainChattingWidget(infos[index])
-              child: MainChattingWidget(chatList[index])
+              child: MainChattingWidget(chatList[index].id)
           );
         },
       ),
@@ -67,12 +66,6 @@ class _ChattingListPageState extends State<ChattingListPage> {
         ),
       ),
     );
-  }
-
-
-  @override
-  void initState() {
-    _future = _getFriends();
   }
 
   Future _getFriends() async {
